@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const verificarToken = require("../middleware/verificarToken");
 
 const {
     crearUsuario,
@@ -9,33 +8,15 @@ const {
     actualizarUsuario,
     eliminarUsuario
 } = require("../controllers/authController");
-router.post(
-    "/usuarios",
-    verificarToken,
-    crearUsuario
-);
 
-router.get(
-    "/usuarios",
-    verificarToken,
-    obtenerUsuarios
-);
+router.post("/usuarios", crearUsuario);
 
-router.get(
-    "/usuarios/:id",
-    verificarToken,
-    obtenerUsuario
-);
+router.get("/usuarios", obtenerUsuarios);
 
-router.put(
-    "/usuarios/:id",
-    verificarToken,
-    actualizarUsuario
-);
+router.get("/usuarios/:id", obtenerUsuario);
 
-router.delete(
-    "/usuarios/:id",
-    verificarToken,
-    eliminarUsuario
-);
+router.put("/usuarios/:id", actualizarUsuario);
+
+router.delete("/usuarios/:id", eliminarUsuario);
+
 module.exports = router;
