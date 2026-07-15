@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const verificarToken = require("../middleware/verificarToken");
 
 const {
     crearUsuario,
@@ -8,18 +9,33 @@ const {
     actualizarUsuario,
     eliminarUsuario
 } = require("../controllers/authController");
-// Crear usuario
-router.post("/usuarios", crearUsuario);
+router.post(
+    "/usuarios",
+    verificarToken,
+    crearUsuario
+);
 
-// Obtener todos los usuarios
-router.get("/usuarios", obtenerUsuarios);
+router.get(
+    "/usuarios",
+    verificarToken,
+    obtenerUsuarios
+);
 
-// Obtener un usuario por ID
-router.get("/usuarios/:id", obtenerUsuario);
+router.get(
+    "/usuarios/:id",
+    verificarToken,
+    obtenerUsuario
+);
 
-// Actualizar usuario
-router.put("/usuarios/:id", actualizarUsuario);
+router.put(
+    "/usuarios/:id",
+    verificarToken,
+    actualizarUsuario
+);
 
-// Eliminar usuario
-router.delete("/usuarios/:id", eliminarUsuario);
+router.delete(
+    "/usuarios/:id",
+    verificarToken,
+    eliminarUsuario
+);
 module.exports = router;
