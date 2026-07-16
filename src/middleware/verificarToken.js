@@ -5,32 +5,39 @@ const verificarToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-
         return res.status(401).json({
             mensaje: "Token requerido"
         });
+    }
 
+    // Verificar formato Bearer
+    if (!authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+            mensaje: "Formato de token inválido"
+        });
     }
 
     const token = authHeader.split(" ")[1];
 
+    // Verificar que sea el token autorizado
+    if (token !== process.env.APP_TOKEN) {
+        return res.status(401).json({
+            mensaje: "Token no autorizado"
+        });
+    }
+
     try {
 
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
+        const datos = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.appData = decoded;
+        req.token = datos;
 
         next();
 
     } catch (error) {
 
         return res.status(401).json({
-
             mensaje: "Token inválido"
-
         });
 
     }
